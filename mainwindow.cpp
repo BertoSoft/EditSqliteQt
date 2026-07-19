@@ -13,8 +13,8 @@ MainWindow::~MainWindow(){
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked(){
-
+void MainWindow::on_cmdSalir_clicked(){
     exit(0);
+
 }
 
