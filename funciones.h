@@ -22,7 +22,6 @@ public:
     // Funciones
     //
     QString getAppName();
-    QPoint  getxyCentroPantalla();
 
 };
 

@@ -20,6 +20,7 @@ public:
     //
     // Funciones de MainWindow
     //
+    void    initUi();
     void    initReloj();
     void    refrescaReloj();
     void    salir();
@@ -27,7 +28,6 @@ public:
 protected:
 
     bool    eventFilter(QObject *obj, QEvent *ev);
-
 
 private:
     Ui::MainWindow *ui;

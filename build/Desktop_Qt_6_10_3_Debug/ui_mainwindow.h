@@ -10,10 +10,11 @@
 #define UI_MAINWINDOW_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
-#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
 
@@ -22,9 +23,12 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
+    QAction *actionAbrir_Archivo;
+    QAction *actionSAlir;
     QWidget *centralwidget;
-    QPushButton *pushButton;
     QMenuBar *menubar;
+    QMenu *menuArchivo;
+    QMenu *menuEdicion;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -32,19 +36,30 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
         MainWindow->resize(800, 600);
+        actionAbrir_Archivo = new QAction(MainWindow);
+        actionAbrir_Archivo->setObjectName("actionAbrir_Archivo");
+        actionSAlir = new QAction(MainWindow);
+        actionSAlir->setObjectName("actionSAlir");
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
-        pushButton = new QPushButton(centralwidget);
-        pushButton->setObjectName("pushButton");
-        pushButton->setGeometry(QRect(400, 120, 201, 41));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
         menubar->setGeometry(QRect(0, 0, 800, 23));
+        menuArchivo = new QMenu(menubar);
+        menuArchivo->setObjectName("menuArchivo");
+        menuEdicion = new QMenu(menubar);
+        menuEdicion->setObjectName("menuEdicion");
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
         MainWindow->setStatusBar(statusbar);
+
+        menubar->addAction(menuArchivo->menuAction());
+        menubar->addAction(menuEdicion->menuAction());
+        menuArchivo->addAction(actionAbrir_Archivo);
+        menuArchivo->addSeparator();
+        menuArchivo->addAction(actionSAlir);
 
         retranslateUi(MainWindow);
 
@@ -54,7 +69,10 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "Salir", nullptr));
+        actionAbrir_Archivo->setText(QCoreApplication::translate("MainWindow", "Abrir Archivo...", nullptr));
+        actionSAlir->setText(QCoreApplication::translate("MainWindow", "Salir", nullptr));
+        menuArchivo->setTitle(QCoreApplication::translate("MainWindow", "Archivo", nullptr));
+        menuEdicion->setTitle(QCoreApplication::translate("MainWindow", "Edicion", nullptr));
     } // retranslateUi
 
 };

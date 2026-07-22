@@ -2,6 +2,7 @@
 #include "funciones.h"
 
 #include <QApplication>
+#include <QTimer>
 
 int main(int argc, char *argv[])
 {
@@ -11,17 +12,9 @@ int main(int argc, char *argv[])
     //
     // Aqui empiezo yo
     //
-    w.resize(800,600);
-
-    QPoint xyCentroPantalla = Funciones().getxyCentroPantalla();
-    int x = (xyCentroPantalla.x() - (w.width() / 2));
-    int y = (xyCentroPantalla.y() - (w.height() / 2));
-    w.move(x, y);
-
     w.setWindowTitle(Funciones().getAppName());
     w.setWindowIcon(QIcon(":/icono.png"));
-    w.move(x, y);
-
     w.show();
+
     return QApplication::exec();
 }

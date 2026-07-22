@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "funciones.h"
+
 #include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -19,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Desarrollamos la App
     //
     initReloj();
+    initUi();
 
 }
 
@@ -36,12 +39,20 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *ev){
         salir();
     }
 
+    //
+    // Devolvemos obj, y ev para que sean procesados por Qt
+    //
+
     return QObject::eventFilter(obj, ev);
 }
 
 //
 // Funciones de MainWindow
 //
+void MainWindow::initUi(){
+
+}
+
 void MainWindow::initReloj(void){
 
     //
