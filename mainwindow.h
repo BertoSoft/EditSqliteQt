@@ -17,6 +17,17 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
 
+    //
+    // Funciones de MainWindow
+    //
+    void    initReloj();
+    void    refrescaReloj();
+    void    salir();
+
+protected:
+
+    bool    eventFilter(QObject *obj, QEvent *ev);
+
 
 private:
     Ui::MainWindow *ui;

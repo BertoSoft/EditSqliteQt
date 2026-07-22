@@ -23,8 +23,33 @@
      <height>23</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuArchivo">
+    <property name="title">
+     <string>Archivo</string>
+    </property>
+    <addaction name="actionAbrir_Archivo"/>
+    <addaction name="separator"/>
+    <addaction name="actionSAlir"/>
+   </widget>
+   <widget class="QMenu" name="menuEdicion">
+    <property name="title">
+     <string>Edicion</string>
+    </property>
+   </widget>
+   <addaction name="menuArchivo"/>
+   <addaction name="menuEdicion"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionAbrir_Archivo">
+   <property name="text">
+    <string>Abrir Archivo...</string>
+   </property>
+  </action>
+  <action name="actionSAlir">
+   <property name="text">
+    <string>Salir</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

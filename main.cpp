@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     //
     // Aqui empiezo yo
     //
-    w.resize(640,480);
+    w.resize(800,600);
 
     QPoint xyCentroPantalla = Funciones().getxyCentroPantalla();
     int x = (xyCentroPantalla.x() - (w.width() / 2));
