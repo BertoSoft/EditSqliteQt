@@ -17,9 +17,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
 
-private slots:
-
-    void on_cmdSalir_clicked();
 
 private:
     Ui::MainWindow *ui;

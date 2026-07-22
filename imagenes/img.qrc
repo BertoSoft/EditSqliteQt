@@ -1,0 +1,30 @@
+<RCC>
+    <qresource prefix="/">
+        <file>vacaciones.png</file>
+        <file>user.png</file>
+        <file>Seleccionar.png</file>
+        <file>save.jpeg</file>
+        <file>salir.jpeg</file>
+        <file>modificarbd.png</file>
+        <file>logo.png</file>
+        <file>importarincidencias.png</file>
+        <file>importardatos.png</file>
+        <file>img.qrc</file>
+        <file>imagenes.qrc</file>
+        <file>icono.png</file>
+        <file>icon.png</file>
+        <file>festivo.png</file>
+        <file>exportarincidencias.png</file>
+        <file>exportardatos.png</file>
+        <file>euro.png</file>
+        <file>enter.jpeg</file>
+        <file>empleado.jpeg</file>
+        <file>crearnomina.png</file>
+        <file>compania.png</file>
+        <file>cerrar.jpeg</file>
+        <file>cancelar.jpeg</file>
+        <file>calendariolaboral.jpg</file>
+        <file>atras.png</file>
+        <file>abrir.jpeg</file>
+    </qresource>
+</RCC>
