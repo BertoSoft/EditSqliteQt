@@ -7,6 +7,7 @@
 #include <QScreen>
 #include <QDate>
 #include <QTime>
+#include <QStringList>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -23,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     //
     // Desarrollamos la App
     //
+    this->resize(800, 400);
     initReloj();
     initUi();
 
@@ -54,9 +56,11 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *ev){
 // Funciones de MainWindow
 //
 void MainWindow::initUi(){
-    this->resize(800, 400);
+
     centrarApp();
     initBarraEstado();
+    initArbolTablas();
+
 }
 
 void MainWindow::initReloj(void){
@@ -83,9 +87,11 @@ void MainWindow::initBarraEstado(){
     //
     // Establezco la barra de estado
     //
-    lblTexto->setStyleSheet("color: black; background-color: lightgray; font-size: 11pt; font-weight: bold");
-    lblFecha->setStyleSheet("color: black; background-color: lightgray; font-size: 11pt; font-weight: bold");
-    lblHora->setStyleSheet("color: black; background-color: lightgray; font-size: 11pt; font-weight: bold");
+    ui->bePrincipal->setSizeGripEnabled(false);
+
+    lblTexto->setStyleSheet("color: blue; background-color: lightgray; font-size: 11pt; font-weight: bold");
+    lblFecha->setStyleSheet("color: blue; background-color: lightgray; font-size: 11pt; font-weight: bold");
+    lblHora->setStyleSheet("color: blue; background-color: lightgray; font-size: 11pt; font-weight: bold");
 
     lblHora->setFrameShape(QFrame::Shape::WinPanel);
     lblFecha->setFrameShape(QFrame::Shape::WinPanel);
@@ -95,12 +101,23 @@ void MainWindow::initBarraEstado(){
     lblFecha->setFrameShadow(QFrame::Shadow::Sunken);
     lblTexto->setFrameShadow(QFrame::Shadow::Sunken);
 
-    ui->statusbar->addWidget(lblTexto, 15);
-    ui->statusbar->addWidget(lblFecha, 3);
-    ui->statusbar->addWidget(lblHora, 2);
+    ui->bePrincipal->addPermanentWidget(lblFecha, 3);
+    ui->bePrincipal->addPermanentWidget(lblHora, 1);
+    ui->bePrincipal->addWidget(lblTexto, 15);
 
     lblTexto->setText(Funciones().getAppName());
     refrescaReloj();
+
+}
+
+void MainWindow::initArbolTablas(){
+
+    //
+    // Tres columnas
+    //
+    ui->arbolTablas->setColumnCount(3);
+    ui->arbolTablas->setHeaderLabels(QStringList() << "Nombre" << "Tipo" << "Esquema");
+
 
 }
 

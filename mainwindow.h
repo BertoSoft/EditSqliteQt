@@ -31,6 +31,7 @@ public:
     void    initUi();
     void    initReloj();
     void    initBarraEstado();
+    void    initArbolTablas();
     void    refrescaReloj();
     void    salir();
     void    centrarApp();
