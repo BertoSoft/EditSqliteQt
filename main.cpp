@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
     //
     w.setWindowTitle(Funciones().getAppName());
     w.setWindowIcon(QIcon(":/icono.png"));
+    w.setWindowModality(Qt::ApplicationModal);
     w.show();
 
     return QApplication::exec();

@@ -4,6 +4,7 @@
 #include "funciones.h"
 
 #include <QTimer>
+#include <QScreen>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -39,6 +40,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *ev){
         salir();
     }
 
+
     //
     // Devolvemos obj, y ev para que sean procesados por Qt
     //
@@ -50,7 +52,8 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *ev){
 // Funciones de MainWindow
 //
 void MainWindow::initUi(){
-
+    this->resize(800, 400);
+    centrarApp();
 }
 
 void MainWindow::initReloj(void){
@@ -72,6 +75,16 @@ void MainWindow::initReloj(void){
 }
 
 void MainWindow::refrescaReloj(){
+}
+
+void MainWindow::centrarApp(){
+    QScreen *pantalla = QGuiApplication::primaryScreen();
+    QRect   geometriaPantalla = pantalla->availableGeometry();
+
+    int x = (geometriaPantalla.width()/2) - (this->width()/2);
+    int y = (geometriaPantalla.height()/2) - (this->height()/2);
+
+    this->move(x, y);
 }
 
 void MainWindow::salir(){

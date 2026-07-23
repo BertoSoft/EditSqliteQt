@@ -24,6 +24,7 @@ public:
     void    initReloj();
     void    refrescaReloj();
     void    salir();
+    void    centrarApp();
 
 protected:
 
