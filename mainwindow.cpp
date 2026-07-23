@@ -5,6 +5,8 @@
 
 #include <QTimer>
 #include <QScreen>
+#include <QDate>
+#include <QTime>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -54,6 +56,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *ev){
 void MainWindow::initUi(){
     this->resize(800, 400);
     centrarApp();
+    initBarraEstado();
 }
 
 void MainWindow::initReloj(void){
@@ -74,7 +77,43 @@ void MainWindow::initReloj(void){
     reloj->start(1000);
 }
 
+void MainWindow::initBarraEstado(){
+
+
+    //
+    // Establezco la barra de estado
+    //
+    lblTexto->setStyleSheet("color: black; background-color: lightgray; font-size: 11pt; font-weight: bold");
+    lblFecha->setStyleSheet("color: black; background-color: lightgray; font-size: 11pt; font-weight: bold");
+    lblHora->setStyleSheet("color: black; background-color: lightgray; font-size: 11pt; font-weight: bold");
+
+    lblHora->setFrameShape(QFrame::Shape::WinPanel);
+    lblFecha->setFrameShape(QFrame::Shape::WinPanel);
+    lblTexto->setFrameShape(QFrame::Shape::WinPanel);
+
+    lblHora->setFrameShadow(QFrame::Shadow::Sunken);
+    lblFecha->setFrameShadow(QFrame::Shadow::Sunken);
+    lblTexto->setFrameShadow(QFrame::Shadow::Sunken);
+
+    ui->statusbar->addWidget(lblTexto, 15);
+    ui->statusbar->addWidget(lblFecha, 3);
+    ui->statusbar->addWidget(lblHora, 2);
+
+    lblTexto->setText(Funciones().getAppName());
+    refrescaReloj();
+
+}
+
 void MainWindow::refrescaReloj(){
+    QLocale locale;
+    QDate   fecha   = QDate::currentDate();
+    QTime   hora    = QTime::currentTime();
+
+    //
+    // Rellenamos fecha y hora
+    //
+    lblFecha->setText(locale.toString(fecha, "dddd ',' dd 'de' MMMM 'de' yyyy"));
+    lblHora->setText(hora.toString("hh:mm:ss"));
 }
 
 void MainWindow::centrarApp(){
