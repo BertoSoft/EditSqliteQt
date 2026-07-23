@@ -118,6 +118,20 @@ void MainWindow::initArbolTablas(){
     ui->arbolTablas->setColumnCount(3);
     ui->arbolTablas->setHeaderLabels(QStringList() << "Nombre" << "Tipo" << "Esquema");
 
+    //
+    // Añadimos items
+    //
+    QTreeWidgetItem *itemRoot = new QTreeWidgetItem(ui->arbolTablas);
+    itemRoot->setText(0, "Tabla");
+    itemRoot->setText(2, "Esquema Creacion de la Tabla");
+
+    QTreeWidgetItem *itemTabla1 = new QTreeWidgetItem(itemRoot);
+    itemTabla1->setText(0, "Nombre Tabla");
+    itemTabla1->setText(2, "Esquema creacion de esta tabla");
+
+
+    itemRoot->setExpanded(true);
+
 
 }
 
