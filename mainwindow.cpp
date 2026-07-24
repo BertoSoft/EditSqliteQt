@@ -8,6 +8,8 @@
 #include <QDate>
 #include <QTime>
 #include <QStringList>
+#include <QFileDialog>
+#include <QKeyEvent>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -34,6 +36,20 @@ MainWindow::~MainWindow(){
     delete ui;
 }
 
+//
+// Funciones sobreescritas, protected
+//
+void MainWindow::keyPressEvent(QKeyEvent *ev){
+
+    //
+    // Si se pulsa ESC en MainWindow, Salimos
+    //
+    if(ev->key() == Qt::Key_Escape){
+        salir();
+    }
+
+    QWidget::keyPressEvent(ev);
+}
 bool MainWindow::eventFilter(QObject *obj, QEvent *ev){
 
     //
@@ -43,11 +59,9 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *ev){
         salir();
     }
 
-
     //
     // Devolvemos obj, y ev para que sean procesados por Qt
     //
-
     return QObject::eventFilter(obj, ev);
 }
 
@@ -57,6 +71,22 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *ev){
 //
 void MainWindow::abrirBaseDatos(){
 
+    //
+    // Iniciamos el dialogo de abrir archivo
+    //
+    QString strRutaFile = QFileDialog::getOpenFileName(
+        this,
+        Funciones().getAppName(),
+        QDir::homePath(),
+        "Archivos SQLite (*.db)(*.old) ;; Todos los Archivos (*.*)"
+        );
+
+    //
+    // Comprobar que existe el archivo
+    //
+    if(strRutaFile.isEmpty()){
+
+    }
 
 
 
@@ -162,5 +192,10 @@ void MainWindow::salir(){
 //
 void MainWindow::on_actionAbrir_Archivo_triggered(){
     abrirBaseDatos();
+}
+
+
+void MainWindow::on_actionSAlir_triggered(){
+    salir();
 }
 

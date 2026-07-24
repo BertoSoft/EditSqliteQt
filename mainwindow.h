@@ -39,10 +39,13 @@ public:
 
 protected:
 
-    bool    eventFilter(QObject *obj, QEvent *ev);
+    bool    eventFilter(QObject *obj, QEvent *ev) override;
+    void    keyPressEvent(QKeyEvent *ev) override;
 
 private slots:
     void on_actionAbrir_Archivo_triggered();
+
+    void on_actionSAlir_triggered();
 
 private:
     Ui::MainWindow *ui;
