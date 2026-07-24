@@ -28,6 +28,7 @@ public:
     //
     // Funciones de MainWindow
     //
+    void    abrirBaseDatos();
     void    initUi();
     void    initReloj();
     void    initBarraEstado();
@@ -39,6 +40,9 @@ public:
 protected:
 
     bool    eventFilter(QObject *obj, QEvent *ev);
+
+private slots:
+    void on_actionAbrir_Archivo_triggered();
 
 private:
     Ui::MainWindow *ui;

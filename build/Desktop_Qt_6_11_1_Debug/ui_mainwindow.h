@@ -20,6 +20,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
+#include <QtWidgets/QToolBar>
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QWidget>
 
@@ -40,7 +41,8 @@ public:
     QMenuBar *menubar;
     QMenu *menuArchivo;
     QMenu *menuEdicion;
-    QStatusBar *bePrincipal;
+    QStatusBar *sbPrincipal;
+    QToolBar *toolBar;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -53,8 +55,14 @@ public:
         MainWindow->setWindowIcon(icon);
         actionAbrir_Archivo = new QAction(MainWindow);
         actionAbrir_Archivo->setObjectName("actionAbrir_Archivo");
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/abrir.jpeg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        actionAbrir_Archivo->setIcon(icon1);
         actionSAlir = new QAction(MainWindow);
         actionSAlir->setObjectName("actionSAlir");
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/salir.jpeg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        actionSAlir->setIcon(icon2);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
         gridLayout = new QGridLayout(centralwidget);
@@ -86,15 +94,20 @@ public:
         menuEdicion = new QMenu(menubar);
         menuEdicion->setObjectName("menuEdicion");
         MainWindow->setMenuBar(menubar);
-        bePrincipal = new QStatusBar(MainWindow);
-        bePrincipal->setObjectName("bePrincipal");
-        MainWindow->setStatusBar(bePrincipal);
+        sbPrincipal = new QStatusBar(MainWindow);
+        sbPrincipal->setObjectName("sbPrincipal");
+        MainWindow->setStatusBar(sbPrincipal);
+        toolBar = new QToolBar(MainWindow);
+        toolBar->setObjectName("toolBar");
+        toolBar->setToolButtonStyle(Qt::ToolButtonStyle::ToolButtonTextBesideIcon);
+        MainWindow->addToolBar(Qt::ToolBarArea::TopToolBarArea, toolBar);
 
         menubar->addAction(menuArchivo->menuAction());
         menubar->addAction(menuEdicion->menuAction());
         menuArchivo->addAction(actionAbrir_Archivo);
         menuArchivo->addSeparator();
         menuArchivo->addAction(actionSAlir);
+        toolBar->addAction(actionAbrir_Archivo);
 
         retranslateUi(MainWindow);
 
@@ -107,7 +120,7 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        actionAbrir_Archivo->setText(QCoreApplication::translate("MainWindow", "Abrir Archivo...", nullptr));
+        actionAbrir_Archivo->setText(QCoreApplication::translate("MainWindow", "Abrir Base de Datos", nullptr));
         actionSAlir->setText(QCoreApplication::translate("MainWindow", "Salir", nullptr));
         QTreeWidgetItem *___qtreewidgetitem = arbolTablas->headerItem();
         ___qtreewidgetitem->setText(2, QCoreApplication::translate("MainWindow", "Esquema", nullptr));
@@ -117,6 +130,7 @@ public:
         tabPrincipal->setTabText(tabPrincipal->indexOf(tab_2), QCoreApplication::translate("MainWindow", "Hoja de datos", nullptr));
         menuArchivo->setTitle(QCoreApplication::translate("MainWindow", "Archivo", nullptr));
         menuEdicion->setTitle(QCoreApplication::translate("MainWindow", "Edicion", nullptr));
+        toolBar->setWindowTitle(QCoreApplication::translate("MainWindow", "toolBar", nullptr));
     } // retranslateUi
 
 };

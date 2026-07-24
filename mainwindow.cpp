@@ -24,10 +24,9 @@ MainWindow::MainWindow(QWidget *parent)
     //
     // Desarrollamos la App
     //
-    this->resize(800, 400);
+    this->resize(1200, 600);
     initReloj();
     initUi();
-
 }
 
 MainWindow::~MainWindow(){
@@ -52,9 +51,18 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *ev){
     return QObject::eventFilter(obj, ev);
 }
 
+
 //
 // Funciones de MainWindow
 //
+void MainWindow::abrirBaseDatos(){
+
+
+
+
+
+}
+
 void MainWindow::initUi(){
 
     centrarApp();
@@ -87,7 +95,7 @@ void MainWindow::initBarraEstado(){
     //
     // Establezco la barra de estado
     //
-    ui->bePrincipal->setSizeGripEnabled(false);
+    ui->sbPrincipal->setSizeGripEnabled(false);
 
     lblTexto->setStyleSheet("color: blue; background-color: lightgray; font-size: 11pt; font-weight: bold");
     lblFecha->setStyleSheet("color: blue; background-color: lightgray; font-size: 11pt; font-weight: bold");
@@ -101,13 +109,12 @@ void MainWindow::initBarraEstado(){
     lblFecha->setFrameShadow(QFrame::Shadow::Sunken);
     lblTexto->setFrameShadow(QFrame::Shadow::Sunken);
 
-    ui->bePrincipal->addPermanentWidget(lblFecha, 3);
-    ui->bePrincipal->addPermanentWidget(lblHora, 1);
-    ui->bePrincipal->addWidget(lblTexto, 15);
+    ui->sbPrincipal->addPermanentWidget(lblFecha, 3);
+    ui->sbPrincipal->addPermanentWidget(lblHora, 1);
+    ui->sbPrincipal->addWidget(lblTexto, 15);
 
     lblTexto->setText(Funciones().getAppName());
     refrescaReloj();
-
 }
 
 void MainWindow::initArbolTablas(){
@@ -117,20 +124,9 @@ void MainWindow::initArbolTablas(){
     //
     ui->arbolTablas->setColumnCount(3);
     ui->arbolTablas->setHeaderLabels(QStringList() << "Nombre" << "Tipo" << "Esquema");
-
-    //
-    // Añadimos items
-    //
-    QTreeWidgetItem *itemRoot = new QTreeWidgetItem(ui->arbolTablas);
-    itemRoot->setText(0, "Tabla");
-    itemRoot->setText(2, "Esquema Creacion de la Tabla");
-
-    QTreeWidgetItem *itemTabla1 = new QTreeWidgetItem(itemRoot);
-    itemTabla1->setText(0, "Nombre Tabla");
-    itemTabla1->setText(2, "Esquema creacion de esta tabla");
-
-
-    itemRoot->setExpanded(true);
+    ui->arbolTablas->setColumnWidth(0, 250);
+    ui->arbolTablas->setColumnWidth(1, 150);
+    ui->arbolTablas->header()->setSectionResizeMode(2, QHeaderView::Stretch);
 
 
 }
@@ -158,5 +154,13 @@ void MainWindow::centrarApp(){
 }
 
 void MainWindow::salir(){
+    exit(0);
+}
+
+//
+// Funciones Actions
+//
+void MainWindow::on_actionAbrir_Archivo_triggered(){
+    abrirBaseDatos();
 }
 

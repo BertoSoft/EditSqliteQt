@@ -90,13 +90,36 @@
    <addaction name="menuArchivo"/>
    <addaction name="menuEdicion"/>
   </widget>
-  <widget class="QStatusBar" name="bePrincipal"/>
+  <widget class="QStatusBar" name="sbPrincipal"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionAbrir_Archivo"/>
+  </widget>
   <action name="actionAbrir_Archivo">
+   <property name="icon">
+    <iconset resource="imagenes/img.qrc">
+     <normaloff>:/abrir.jpeg</normaloff>:/abrir.jpeg</iconset>
+   </property>
    <property name="text">
-    <string>Abrir Archivo...</string>
+    <string>Abrir Base de Datos</string>
    </property>
   </action>
   <action name="actionSAlir">
+   <property name="icon">
+    <iconset resource="imagenes/img.qrc">
+     <normaloff>:/salir.jpeg</normaloff>:/salir.jpeg</iconset>
+   </property>
    <property name="text">
     <string>Salir</string>
    </property>
