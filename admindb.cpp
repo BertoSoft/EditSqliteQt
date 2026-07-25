@@ -2,6 +2,8 @@
 
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
+#include <QtSql/QSqlRecord>
+#include <QtSql/QSqlField>
 
 AdminDb::AdminDb() {
 
@@ -13,7 +15,6 @@ AdminDb::~AdminDb(){
 
 bool AdminDb::isSQLite(QString strRutaArchivo){
     QSqlDatabase    dbSql;
-    QSqlQuery       sql;
     QString         strSql;
 
     if(strRutaArchivo.isEmpty()){
@@ -64,38 +65,103 @@ QList<QString> AdminDb::getAllTablas(QString strRutaArchivo){
     return listaTablasOrdenada;
 }
 
-QList<QString> AdminDb::getAllSentenciasSql(QString strRutaArchivo){
-    QList<QString>  lista;
-    QSqlDatabase    dbSql;
-    QSqlQuery       sql;
-    QString         strSql;
+QList<Funciones::datCampos> AdminDb::getAllCampos(QString strBd, QString strTabla){
+    QList<Funciones::datCampos>     listaCampos;
+    QSqlDatabase                    dbSql;
+    QSqlQuery                       sql;
+    QString                         strSql;
 
     dbSql = QSqlDatabase::addDatabase("QSQLITE", "con_3");
-    dbSql.setDatabaseName(strRutaArchivo);
+    dbSql.setDatabaseName(strBd);
+    sql = QSqlQuery(dbSql);
+
+    strSql = "PRAGMA table_info(";
+    strSql.append(strTabla);
+    strSql.append(")");
 
     if(dbSql.open()){
-        sql     = QSqlQuery(dbSql);
-        strSql  = "SELECT sql FROM sqlite_master WHERE type='table'";
         sql.exec(strSql);
-    }
-    sql.first();
-    while (sql.isValid()) {
-        lista.append(sql.value(0).toString());
-        sql.next();
+        }
+
+    if(sql.first()){
+            while (sql.isValid()) {
+                Funciones::datCampos    dato;
+
+                dato.strNombre          = sql.value("name").toString();
+                dato.strTipo            = sql.value("type").toString();
+                dato.noNulo             = sql.value("notnull").toBool();
+                dato.strValorDefecto    = sql.value("dflt_value").toString();
+                dato.isClavePrimaria    = sql.value("name").toBool();
+
+                listaCampos.append(dato);
+                sql.next();
+            }
     }
 
     dbSql.close();
     QSqlDatabase::removeDatabase("con_3");
 
-
-
-
-
-
-
-
-
-
-
-    return lista;
+    return listaCampos;
 }
+
+QList<Funciones::datTablas> AdminDb::getAllTablasAndSql(QString strRutaArchivo){
+    QList<Funciones::datTablas>     listaTablasSql;
+    QList<Funciones::datTablas>     listaTmp;
+    QList<QString>                  listaTablas;
+    QSqlDatabase                    dbSql;
+    QSqlQuery                       sql;
+    QString                         strSql;
+
+    //
+    // Obtengo una lista de tablas con QSQL::Tables
+    //
+    listaTablas = getAllTablas(strRutaArchivo);
+
+    //
+    // Obtengo los datos de la tabla sqlite_schema
+    //
+    dbSql = QSqlDatabase::addDatabase("QSQLITE", "con_4");
+    dbSql.setDatabaseName(strRutaArchivo);
+
+    if(dbSql.open()){
+        sql     = QSqlQuery(dbSql);
+        strSql  = "SELECT *FROM sqlite_master";
+        sql.exec(strSql);
+    }
+    sql.first();
+    while (sql.isValid()) {
+        Funciones::datTablas    dato;
+
+        dato.strNombre  = sql.value(1).toString();
+        dato.strSql     = sql.value(4).toString();
+        listaTmp.append(dato);
+
+        sql.next();
+    }
+
+    //
+    // Ordeno los datos de sqlite_schema con los de Qsql::Tables
+    //
+    int i = 0;
+    int j = 0;
+    while (i < listaTablas.count()) {
+        j = 0;
+        while (j < listaTmp.count()) {
+            if(listaTablas[i] == listaTmp[j].strNombre){
+                Funciones::datTablas dato;
+
+                dato.strNombre  = listaTablas[i];
+                dato.strSql     = listaTmp[j].strSql;
+                listaTablasSql.append(dato);
+            }
+            j++;
+        }
+        i++;
+    }
+
+    dbSql.close();
+    QSqlDatabase::removeDatabase("con_4");
+
+    return listaTablasSql;
+}
+

@@ -1,6 +1,8 @@
 #ifndef ADMINDB_H
 #define ADMINDB_H
 
+#include "funciones.h"
+
 #include <QString>
 
 
@@ -13,10 +15,10 @@ public:
     //
     // Funciones Publicas
     //
-    bool            isSQLite(QString strRutaArchivo);
-    QList<QString>  getAllTablas(QString strRutaArchivo);
-    QList<QString>  getAllSentenciasSql(QString strRutaArchivo);
-
+    bool                            isSQLite(QString strRutaArchivo);
+    QList<QString>                  getAllTablas(QString strRutaArchivo);
+    QList<Funciones::datTablas>     getAllTablasAndSql(QString strRutaArchivo);
+    QList<Funciones::datCampos>     getAllCampos(QString strBd, QString strTabla);
 
 };
 

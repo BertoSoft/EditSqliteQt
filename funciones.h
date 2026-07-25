@@ -17,6 +17,18 @@ public:
     //
     // Estructuras
     //
+    struct datTablas{
+        QString strNombre;
+        QString strSql;
+    };
+
+    struct datCampos{
+        QString strNombre;
+        QString strTipo;
+        bool    noNulo;
+        QString strValorDefecto;
+        bool    isClavePrimaria;
+    };
 
     //
     // Funciones

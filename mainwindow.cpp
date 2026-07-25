@@ -52,6 +52,7 @@ void MainWindow::keyPressEvent(QKeyEvent *ev){
 
     QWidget::keyPressEvent(ev);
 }
+
 bool MainWindow::eventFilter(QObject *obj, QEvent *ev){
 
     //
@@ -151,9 +152,9 @@ void MainWindow::initBarraEstado(){
     //
     ui->sbPrincipal->setSizeGripEnabled(false);
 
-    lblTexto->setStyleSheet("color: blue; background-color: lightgray; font-size: 11pt; font-weight: bold");
-    lblFecha->setStyleSheet("color: blue; background-color: lightgray; font-size: 11pt; font-weight: bold");
-    lblHora->setStyleSheet("color: blue; background-color: lightgray; font-size: 11pt; font-weight: bold");
+    lblTexto->setStyleSheet("color: black; background-color: lightgray; font-size: 11pt; font-weight: bold");
+    lblFecha->setStyleSheet("color: black; background-color: lightgray; font-size: 11pt; font-weight: bold");
+    lblHora->setStyleSheet("color: black; background-color: lightgray; font-size: 11pt; font-weight: bold");
 
     lblHora->setFrameShape(QFrame::Shape::WinPanel);
     lblFecha->setFrameShape(QFrame::Shape::WinPanel);
@@ -198,30 +199,65 @@ void MainWindow::refrescaReloj(){
 }
 
 void MainWindow::refrescaArbolTablas(){
-    QList<QString>  listaTablas;
-    QList<QString>  listaSentenciasSql;
-    QString         str;
+    QList<Funciones::datTablas>     listaTablasSql;
+    QString                         str;
+    int                             i = 0;
+    int                             j = 0;
 
-    listaTablas = AdminDb().getAllTablas(lblTexto->text());
-    str = "Tablas (";
-    str.append(QString::number(listaTablas.count()));
-    str.append(")");
-
-    listaSentenciasSql = AdminDb().getAllSentenciasSql(lblTexto->text());
+    //
+    // Obtenemos el listado de tablas y sql
+    //
+    listaTablasSql = AdminDb().getAllTablasAndSql(lblTexto->text());
 
 
     //
-    // Creamos la primera rama de tablas
+    // Creamos la primera rama de tablas(n), con itemInicial
     //
     QTreeWidgetItem *itemInicial = new QTreeWidgetItem(ui->arbolTablas);
+
+    str = "Tablas(";
+    str.append(QString::number(listaTablasSql.count()));
+    str.append(")");
+
     itemInicial->setText(0, str);
-    int i = 0;
-    while (i<listaTablas.count()) {
-        QTreeWidgetItem *item = new QTreeWidgetItem(itemInicial);
-        item->setText(0, listaTablas[i]);
+
+    //
+    // Creamos la primera rama con los nombres de las tablas, en item0
+    //
+    i = 0;
+    while (i<listaTablasSql.count()) {
+        j = 0;
+        QTreeWidgetItem *item0 = new QTreeWidgetItem(itemInicial);
+        item0->setText(0, listaTablasSql[i].strNombre);
+        item0->setText(2, listaTablasSql[i].strSql);
+
+        //
+        // Por cada tabla creamos una subrama con los campos, item1
+        //
+        QList<Funciones::datCampos> listaCampos = AdminDb().getAllCampos(
+            lblTexto->text(),
+            listaTablasSql[i].strNombre
+            );
+
+        while (j < listaCampos.count()) {
+            QTreeWidgetItem *item1 = new QTreeWidgetItem(item0);
+
+            str = listaCampos[j].strNombre;
+            str.prepend("\"");
+            str.append("\" ");
+            str.append("\t");
+            str.append(listaCampos[j].strTipo);
+
+
+            item1->setText(0, listaCampos[j].strNombre);
+            item1->setText(1, listaCampos[j].strTipo);
+            item1->setText(2, str);
+            j++;
+        }
 
         i++;
     }
+
 
 
 }
