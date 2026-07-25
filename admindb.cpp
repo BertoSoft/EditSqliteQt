@@ -63,3 +63,39 @@ QList<QString> AdminDb::getAllTablas(QString strRutaArchivo){
 
     return listaTablasOrdenada;
 }
+
+QList<QString> AdminDb::getAllSentenciasSql(QString strRutaArchivo){
+    QList<QString>  lista;
+    QSqlDatabase    dbSql;
+    QSqlQuery       sql;
+    QString         strSql;
+
+    dbSql = QSqlDatabase::addDatabase("QSQLITE", "con_3");
+    dbSql.setDatabaseName(strRutaArchivo);
+
+    if(dbSql.open()){
+        sql     = QSqlQuery(dbSql);
+        strSql  = "SELECT sql FROM sqlite_master WHERE type='table'";
+        sql.exec(strSql);
+    }
+    sql.first();
+    while (sql.isValid()) {
+        lista.append(sql.value(0).toString());
+        sql.next();
+    }
+
+    dbSql.close();
+    QSqlDatabase::removeDatabase("con_3");
+
+
+
+
+
+
+
+
+
+
+
+    return lista;
+}

@@ -3,6 +3,7 @@
 
 #include <QString>
 
+
 class AdminDb
 {
 public:
@@ -14,6 +15,9 @@ public:
     //
     bool            isSQLite(QString strRutaArchivo);
     QList<QString>  getAllTablas(QString strRutaArchivo);
+    QList<QString>  getAllSentenciasSql(QString strRutaArchivo);
+
+
 };
 
 #endif // ADMINDB_H

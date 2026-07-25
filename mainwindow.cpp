@@ -198,15 +198,23 @@ void MainWindow::refrescaReloj(){
 }
 
 void MainWindow::refrescaArbolTablas(){
-    QList<QString> listaTablas;
+    QList<QString>  listaTablas;
+    QList<QString>  listaSentenciasSql;
+    QString         str;
 
     listaTablas = AdminDb().getAllTablas(lblTexto->text());
+    str = "Tablas (";
+    str.append(QString::number(listaTablas.count()));
+    str.append(")");
+
+    listaSentenciasSql = AdminDb().getAllSentenciasSql(lblTexto->text());
+
 
     //
     // Creamos la primera rama de tablas
     //
     QTreeWidgetItem *itemInicial = new QTreeWidgetItem(ui->arbolTablas);
-    itemInicial->setText(0,"Tablas");
+    itemInicial->setText(0, str);
     int i = 0;
     while (i<listaTablas.count()) {
         QTreeWidgetItem *item = new QTreeWidgetItem(itemInicial);
