@@ -42,6 +42,7 @@ protected:
 
     bool    eventFilter(QObject *obj, QEvent *ev) override;
     void    keyPressEvent(QKeyEvent *ev) override;
+    void    resizeEvent(QResizeEvent *ev) override;
 
 private slots:
     void on_actionAbrir_Archivo_triggered();

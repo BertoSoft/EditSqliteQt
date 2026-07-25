@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "admindb.h"
 
+#include "admindb.h"
 #include "funciones.h"
 
 #include <QTimer>
@@ -41,6 +41,20 @@ MainWindow::~MainWindow(){
 //
 // Funciones sobreescritas, protected
 //
+void MainWindow::resizeEvent(QResizeEvent *ev){
+    QSize newTamano = ev->size();
+    QSize oldTamano = ev->oldSize();
+
+    //
+    // Por aqui pasa cada vez que cambia tamaño de la ventana
+    //
+
+
+
+
+    QMainWindow::resizeEvent(ev);
+}
+
 void MainWindow::keyPressEvent(QKeyEvent *ev){
 
     //
@@ -81,7 +95,7 @@ void MainWindow::abrirBaseDatos(){
         this,
         Funciones().getAppName(),
         QDir::homePath(),
-        "Archivos SQLite (*.db)(*.old) ;; Todos los Archivos (*.*)"
+        "Archivos SQLite (*.db *.old) ;; Todos los Archivos (*.*)"
         );
 
     //
@@ -97,6 +111,7 @@ void MainWindow::abrirBaseDatos(){
             //
             // Todo Ok , Abrimos el archivo
             //
+            ui->arbolTablas->clear();
             lblTexto->setText(strRutaFile);
             refrescaArbolTablas();
 
@@ -179,9 +194,21 @@ void MainWindow::initArbolTablas(){
     //
     ui->arbolTablas->setColumnCount(3);
     ui->arbolTablas->setHeaderLabels(QStringList() << "Nombre" << "Tipo" << "Esquema");
-    ui->arbolTablas->setColumnWidth(0, 250);
-    ui->arbolTablas->setColumnWidth(1, 150);
-    ui->arbolTablas->header()->setSectionResizeMode(2, QHeaderView::Stretch);
+
+    //ui->arbolTablas->header()->setSectionResizeMode(0, QHeaderView::Fixed);
+    ui->arbolTablas->setColumnWidth(0, 200);
+    //ui->arbolTablas->header()->setSectionResizeMode(1, QHeaderView::Fixed);
+    ui->arbolTablas->setColumnWidth(1, 125);
+
+    //
+    // 1. Permitir que el contenido defina el ancho real de las columnas
+    //
+    ui->arbolTablas->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+
+    //
+    // 2. Desactivar el estiramiento obligatorio de la última columna
+    //
+    ui->arbolTablas->header()->setStretchLastSection(false);
 
 
 }

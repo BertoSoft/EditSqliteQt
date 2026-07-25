@@ -16,21 +16,33 @@ AdminDb::~AdminDb(){
 bool AdminDb::isSQLite(QString strRutaArchivo){
     QSqlDatabase    dbSql;
     QString         strSql;
+    bool            exito = false;
 
     if(strRutaArchivo.isEmpty()){
         return false;
     }
+
     dbSql = QSqlDatabase::addDatabase("QSQLITE", "con_1");
     dbSql.setDatabaseName(strRutaArchivo);
     if(dbSql.open()){
+        {
+            QSqlQuery sql = QSqlQuery(dbSql);
 
+            strSql = "PRAGMA table_info(";
+            strSql.append("sqlite_sequence");
+            strSql.append(")");
+
+            if(sql.exec(strSql)){
+                exito = true;
+            }
+        }
         dbSql.close();
-        QSqlDatabase::removeDatabase("con_1");
-        return true;
     }
-    else{
-        return false;
-    }
+
+    dbSql = QSqlDatabase();
+
+    QSqlDatabase::removeDatabase("con_1");
+    return exito;
 }
 
 QList<QString> AdminDb::getAllTablas(QString strRutaArchivo){
@@ -46,6 +58,7 @@ QList<QString> AdminDb::getAllTablas(QString strRutaArchivo){
     if(dbSql.open()){
         listaTablas = dbSql.tables(QSql::Tables);
         dbSql.close();
+        dbSql = QSqlDatabase();
         QSqlDatabase::removeDatabase("con_2");
     }
 
@@ -68,8 +81,8 @@ QList<QString> AdminDb::getAllTablas(QString strRutaArchivo){
 QList<Funciones::datCampos> AdminDb::getAllCampos(QString strBd, QString strTabla){
     QList<Funciones::datCampos>     listaCampos;
     QSqlDatabase                    dbSql;
-    QSqlQuery                       sql;
     QString                         strSql;
+    QSqlQuery                       sql;
 
     dbSql = QSqlDatabase::addDatabase("QSQLITE", "con_3");
     dbSql.setDatabaseName(strBd);
@@ -81,24 +94,22 @@ QList<Funciones::datCampos> AdminDb::getAllCampos(QString strBd, QString strTabl
 
     if(dbSql.open()){
         sql.exec(strSql);
+        sql.first();
+        while (sql.isValid()) {
+            Funciones::datCampos    dato;
+
+            dato.strNombre          = sql.value("name").toString();
+            dato.strTipo            = sql.value("type").toString();
+            dato.noNulo             = sql.value("notnull").toBool();
+            dato.strValorDefecto    = sql.value("dflt_value").toString();
+            dato.isClavePrimaria    = sql.value("name").toBool();
+
+            listaCampos.append(dato);
+            sql.next();
         }
-
-    if(sql.first()){
-            while (sql.isValid()) {
-                Funciones::datCampos    dato;
-
-                dato.strNombre          = sql.value("name").toString();
-                dato.strTipo            = sql.value("type").toString();
-                dato.noNulo             = sql.value("notnull").toBool();
-                dato.strValorDefecto    = sql.value("dflt_value").toString();
-                dato.isClavePrimaria    = sql.value("name").toBool();
-
-                listaCampos.append(dato);
-                sql.next();
-            }
     }
 
-    dbSql.close();
+    dbSql = QSqlDatabase();
     QSqlDatabase::removeDatabase("con_3");
 
     return listaCampos;
@@ -133,7 +144,8 @@ QList<Funciones::datTablas> AdminDb::getAllTablasAndSql(QString strRutaArchivo){
         Funciones::datTablas    dato;
 
         dato.strNombre  = sql.value(1).toString();
-        dato.strSql     = sql.value(4).toString();
+        dato.strSql     = sql.value(4).toString().simplified();
+
         listaTmp.append(dato);
 
         sql.next();
@@ -159,7 +171,7 @@ QList<Funciones::datTablas> AdminDb::getAllTablasAndSql(QString strRutaArchivo){
         i++;
     }
 
-    dbSql.close();
+    dbSql = QSqlDatabase();
     QSqlDatabase::removeDatabase("con_4");
 
     return listaTablasSql;
