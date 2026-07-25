@@ -18,3 +18,4 @@ QString Funciones::getAppName(){
     return "EditSqlliteQt 1.0";
 }
 
+

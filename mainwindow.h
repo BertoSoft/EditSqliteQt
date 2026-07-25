@@ -34,6 +34,7 @@ public:
     void    initBarraEstado();
     void    initArbolTablas();
     void    refrescaReloj();
+    void    refrescaArbolTablas();
     void    salir();
     void    centrarApp();
 

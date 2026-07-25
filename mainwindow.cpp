@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "admindb.h"
 
 #include "funciones.h"
 
@@ -10,6 +11,7 @@
 #include <QStringList>
 #include <QFileDialog>
 #include <QKeyEvent>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -82,10 +84,32 @@ void MainWindow::abrirBaseDatos(){
         );
 
     //
-    // Comprobar que existe el archivo
+    // Si no esta vacio
     //
-    if(strRutaFile.isEmpty()){
+    if(!strRutaFile.isEmpty()){
 
+        //
+        // Si es SQLite
+        //
+        if(AdminDb().isSQLite(strRutaFile)){
+
+            //
+            // Todo Ok , Abrimos el archivo
+            //
+            lblTexto->setText(strRutaFile);
+            refrescaArbolTablas();
+
+        }
+
+        //
+        // No es SQLite
+        //
+        else{
+            QMessageBox::information(
+                this,
+                Funciones().getAppName(),
+                "No se reconoce este formato de Archivo...");
+        }
     }
 
 
@@ -173,6 +197,27 @@ void MainWindow::refrescaReloj(){
     lblHora->setText(hora.toString("hh:mm:ss"));
 }
 
+void MainWindow::refrescaArbolTablas(){
+    QList<QString> listaTablas;
+
+    listaTablas = AdminDb().getAllTablas(lblTexto->text());
+
+    //
+    // Creamos la primera rama de tablas
+    //
+    QTreeWidgetItem *itemInicial = new QTreeWidgetItem(ui->arbolTablas);
+    itemInicial->setText(0,"Tablas");
+    int i = 0;
+    while (i<listaTablas.count()) {
+        QTreeWidgetItem *item = new QTreeWidgetItem(itemInicial);
+        item->setText(0, listaTablas[i]);
+
+        i++;
+    }
+
+
+}
+
 void MainWindow::centrarApp(){
     QScreen *pantalla = QGuiApplication::primaryScreen();
     QRect   geometriaPantalla = pantalla->availableGeometry();
@@ -193,7 +238,6 @@ void MainWindow::salir(){
 void MainWindow::on_actionAbrir_Archivo_triggered(){
     abrirBaseDatos();
 }
-
 
 void MainWindow::on_actionSAlir_triggered(){
     salir();
