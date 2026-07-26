@@ -33,8 +33,10 @@ public:
     void    initReloj();
     void    initBarraEstado();
     void    initArbolTablas();
+    void    initSp();
     void    refrescaReloj();
     void    refrescaArbolTablas();
+    void    refrescaTabla();
     void    salir();
     void    centrarApp();
 

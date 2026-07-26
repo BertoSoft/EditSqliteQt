@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->resize(1200, 600);
     initReloj();
     initUi();
+
 }
 
 MainWindow::~MainWindow(){
@@ -114,7 +115,8 @@ void MainWindow::abrirBaseDatos(){
             ui->arbolTablas->clear();
             lblTexto->setText(strRutaFile);
             refrescaArbolTablas();
-
+            initSp();
+            refrescaTabla();
         }
 
         //
@@ -138,7 +140,7 @@ void MainWindow::initUi(){
     centrarApp();
     initBarraEstado();
     initArbolTablas();
-
+    initSp();
 }
 
 void MainWindow::initReloj(void){
@@ -213,6 +215,17 @@ void MainWindow::initArbolTablas(){
 
 }
 
+void MainWindow::initSp(){
+    QList<QString>  listaTablas;
+
+
+    ui->spTablas->clear();
+    if(lblTexto->text() != Funciones().getAppName()){
+        listaTablas = AdminDb().getAllTablas(lblTexto->text());
+        ui->spTablas->addItems(listaTablas);
+    }
+}
+
 void MainWindow::refrescaReloj(){
     QLocale locale;
     QDate   fecha   = QDate::currentDate();
@@ -271,8 +284,7 @@ void MainWindow::refrescaArbolTablas(){
 
             str = listaCampos[j].strNombre;
             str.prepend("\"");
-            str.append("\" ");
-            str.append("\t");
+            str.append("\"  ");
             str.append(listaCampos[j].strTipo);
 
 
@@ -285,6 +297,20 @@ void MainWindow::refrescaArbolTablas(){
         i++;
     }
 
+
+
+}
+
+void MainWindow::refrescaTabla(){
+    QList<Funciones::datCampos> listaCampos;
+    int i;
+
+    listaCampos = AdminDb().getAllCampos(lblTexto->text(), ui->spTablas->currentText());
+
+    //
+    // Numero de columnas = al numero de campos
+    //
+    ui->tabTabla->setColumnCount(listaCampos.count());
 
 
 }

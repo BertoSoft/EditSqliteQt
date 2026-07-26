@@ -13,15 +13,22 @@
 #include <QtGui/QAction>
 #include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
+#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QToolBar>
+#include <QtWidgets/QToolButton>
 #include <QtWidgets/QTreeWidget>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -38,6 +45,14 @@ public:
     QGridLayout *gridLayout_2;
     QTreeWidget *arbolTablas;
     QWidget *tab_2;
+    QGridLayout *gridLayout_3;
+    QVBoxLayout *verticalLayout;
+    QHBoxLayout *horizontalLayout;
+    QLabel *label;
+    QComboBox *spTablas;
+    QToolButton *btnRefrescar;
+    QSpacerItem *horizontalSpacer;
+    QTableWidget *tabTabla;
     QMenuBar *menubar;
     QMenu *menuArchivo;
     QMenu *menuEdicion;
@@ -81,6 +96,53 @@ public:
         tabPrincipal->addTab(tab, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName("tab_2");
+        gridLayout_3 = new QGridLayout(tab_2);
+        gridLayout_3->setObjectName("gridLayout_3");
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName("verticalLayout");
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName("horizontalLayout");
+        label = new QLabel(tab_2);
+        label->setObjectName("label");
+
+        horizontalLayout->addWidget(label);
+
+        spTablas = new QComboBox(tab_2);
+        spTablas->setObjectName("spTablas");
+
+        horizontalLayout->addWidget(spTablas);
+
+        btnRefrescar = new QToolButton(tab_2);
+        btnRefrescar->setObjectName("btnRefrescar");
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/refrescar.jpeg"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        btnRefrescar->setIcon(icon3);
+        btnRefrescar->setIconSize(QSize(24, 24));
+        btnRefrescar->setAutoRaise(true);
+
+        horizontalLayout->addWidget(btnRefrescar);
+
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
+
+        horizontalLayout->addItem(horizontalSpacer);
+
+        horizontalLayout->setStretch(0, 1);
+        horizontalLayout->setStretch(1, 3);
+        horizontalLayout->setStretch(3, 15);
+
+        verticalLayout->addLayout(horizontalLayout);
+
+        tabTabla = new QTableWidget(tab_2);
+        tabTabla->setObjectName("tabTabla");
+        tabTabla->setGridStyle(Qt::PenStyle::SolidLine);
+        tabTabla->verticalHeader()->setVisible(true);
+        tabTabla->verticalHeader()->setProperty("showSortIndicator", QVariant(false));
+
+        verticalLayout->addWidget(tabTabla);
+
+
+        gridLayout_3->addLayout(verticalLayout, 0, 0, 1, 1);
+
         tabPrincipal->addTab(tab_2, QString());
 
         gridLayout->addWidget(tabPrincipal, 0, 0, 1, 1);
@@ -111,7 +173,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabPrincipal->setCurrentIndex(0);
+        tabPrincipal->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -127,6 +189,8 @@ public:
         ___qtreewidgetitem->setText(1, QCoreApplication::translate("MainWindow", "Tipo", nullptr));
         ___qtreewidgetitem->setText(0, QCoreApplication::translate("MainWindow", "Nombre", nullptr));
         tabPrincipal->setTabText(tabPrincipal->indexOf(tab), QCoreApplication::translate("MainWindow", "Estructura", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "Tabla", nullptr));
+        btnRefrescar->setText(QString());
         tabPrincipal->setTabText(tabPrincipal->indexOf(tab_2), QCoreApplication::translate("MainWindow", "Hoja de datos", nullptr));
         menuArchivo->setTitle(QCoreApplication::translate("MainWindow", "Archivo", nullptr));
         menuEdicion->setTitle(QCoreApplication::translate("MainWindow", "Edicion", nullptr));
