@@ -65,6 +65,13 @@ void MainWindow::keyPressEvent(QKeyEvent *ev){
         salir();
     }
 
+    //
+    // Si pulsamos ENTER o RETURN
+    //
+    if(ev->key() == Qt::Key_Enter || ev->key() == Qt::Key_Return){
+        ui->btnModificar->click();
+    }
+
     QWidget::keyPressEvent(ev);
 }
 
@@ -137,9 +144,8 @@ void MainWindow::abrirBaseDatos(){
 
 void MainWindow::initUi(){
 
-    this->resize(1100, 800);
-    this->setMaximumSize(1100, 800);
-    this->setMinimumSize(1100, 800);
+    this->resize(1000, 600);
+    this->setMinimumSize(1000, 600);
 
     centrarApp();
     initBarraEstado();
@@ -394,7 +400,35 @@ void MainWindow::desactivaControles(){
 }
 
 void MainWindow::modificarDatos(){
+    QString                         strDatoCampo    = ui->txtCampo->text();
+    QString                         strTabla        = ui->spTablas->currentText();
+    QString                         strNombreCampo  = ui->lblCampo->text();
+    QList<Funciones::datCampos>     listaCampos     = AdminDb().getAllCampos(lblTexto->text(), strTabla);
+    QTableWidgetItem                *itemSel        = ui->tabTabla->currentItem();
+    QVariantMap                     dato;
 
+    //
+    // Fila seleccionada sin modificar
+    //
+    int i = 0;
+    while (i < listaCampos.count()) {
+        dato[listaCampos[i].strNombre] = ui->tabTabla->item(itemSel->row(), i)->text();
+        i++;
+    }
+
+    //
+    // Modificamos el dato con el item editado
+    //
+    dato[strNombreCampo] = strDatoCampo;
+
+    //
+    //  Grabamos el datos en la base de datos
+    //
+    bool todoOk = AdminDb().setDatoByTabla(
+        lblTexto->text(),
+        strTabla,
+        dato
+        );
 }
 
 void MainWindow::salir(){
@@ -412,7 +446,6 @@ void MainWindow::on_actionSAlir_triggered(){
     salir();
 }
 
-
 void MainWindow::on_spTablas_activated(int index){
     ui->tabTabla->clear();
     refrescaTabla();
@@ -425,7 +458,6 @@ void MainWindow::on_tabTabla_itemActivated(QTableWidgetItem *item){
     ui->txtCampo->selectAll();
 
 }
-
 
 void MainWindow::on_tabTabla_cellClicked(int row, int column){
 
@@ -453,13 +485,13 @@ void MainWindow::on_tabTabla_cellClicked(int row, int column){
 
 }
 
-
 void MainWindow::on_btnModificar_clicked(){
 
     if(ui->txtCampo->text() != ""){
         modificarDatos();
         limpiaControles();
         desactivaControles();
+        refrescaTabla();
         ui->tabTabla->clearSelection();
     }
 }

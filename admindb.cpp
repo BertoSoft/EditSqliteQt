@@ -234,3 +234,54 @@ QList<QVariantMap> AdminDb::getAllDatosTabla(QString strBd, QString strTabla){
 
 }
 
+bool AdminDb::setDatoByTabla(QString strBd, QString strTabla, QVariantMap dato){
+    bool                            todoOk  = false;
+    QSqlDatabase                    dbSql;
+    QSqlQuery                       sql;
+    QString                         strSql;
+    QList<Funciones::datCampos>     listaCampos;
+    int                             i;
+
+    //
+    // Preparamos la sentencia sql
+    //
+    listaCampos = getAllCampos(strBd, strTabla);
+
+    strSql = "UPDATE ";
+    strSql.append(strTabla);
+    strSql.append(" SET ");
+    i = 0;
+    while (i < listaCampos.count()) {
+        strSql.append(listaCampos[i].strNombre);
+        strSql.append(" = '");
+        strSql.append(dato[listaCampos[i].strNombre].toString());
+        strSql.append("', ");
+        i++;
+    }
+    strSql.remove(strSql.length() - 2, 2);
+    strSql.append(" WHERE ");
+    strSql.append(listaCampos[0].strNombre);
+    strSql.append(" = ");
+    strSql.append(dato[listaCampos[0].strNombre].toString());
+    strSql.append(" ;");
+
+    //
+    // Abrimos la base de datos
+    //
+    dbSql = QSqlDatabase::addDatabase("QSQLITE", "con_6");
+    dbSql.setDatabaseName(strBd);
+
+    if(dbSql.open()){
+        sql = QSqlQuery(dbSql);
+        todoOk = sql.exec(strSql);
+    }
+
+    //
+    // Cerramos la base de datos
+    //
+    dbSql = QSqlDatabase();
+    QSqlDatabase::removeDatabase("con_6");
+
+    return todoOk;
+}
+

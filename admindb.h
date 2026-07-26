@@ -20,6 +20,7 @@ public:
     QList<Funciones::datTablas>     getAllTablasAndSql(QString strRutaArchivo);
     QList<Funciones::datCampos>     getAllCampos(QString strBd, QString strTabla);
     QList<QVariantMap>              getAllDatosTabla(QString strBd, QString strTabla);
+    bool                            setDatoByTabla(QString strBd, QString strTabla, QVariantMap dato);
 
 };
 
