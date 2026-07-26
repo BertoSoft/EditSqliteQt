@@ -51,6 +51,8 @@ private slots:
 
     void on_actionSAlir_triggered();
 
+    void on_spTablas_activated(int index);
+
 private:
     Ui::MainWindow *ui;
 };

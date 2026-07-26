@@ -12,6 +12,7 @@
 #include <QFileDialog>
 #include <QKeyEvent>
 #include <QMessageBox>
+#include <QTableWidgetItem>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -303,7 +304,9 @@ void MainWindow::refrescaArbolTablas(){
 
 void MainWindow::refrescaTabla(){
     QList<Funciones::datCampos> listaCampos;
-    int i;
+    QList<QVariantMap>          listaDatosVariant;
+    QList<QString>              listaHeaders;
+    int i, j;
 
     listaCampos = AdminDb().getAllCampos(lblTexto->text(), ui->spTablas->currentText());
 
@@ -311,8 +314,33 @@ void MainWindow::refrescaTabla(){
     // Numero de columnas = al numero de campos
     //
     ui->tabTabla->setColumnCount(listaCampos.count());
+    i = 0;
+    while (i < listaCampos.count()) {
+        listaHeaders.append(listaCampos[i].strNombre);
+        i++;
+    }
+    ui->tabTabla->setHorizontalHeaderLabels(listaHeaders);
 
 
+    listaDatosVariant = AdminDb().getAllDatosTabla(lblTexto->text(), ui->spTablas->currentText());
+
+    //
+    // Ahora Rellenamos la tabla
+    //
+    i = 0;
+    j = 0;
+    while (i < listaDatosVariant.count()) {
+        ui->tabTabla->setRowCount(i + 1);
+        QVariantMap dato = listaDatosVariant[i];
+
+        while (j < listaCampos.count()) {
+            QTableWidgetItem *item = new QTableWidgetItem(dato[listaCampos[j].strNombre].toString());
+            ui->tabTabla->setItem(i, j, item);
+            j++;
+        }
+        i++;
+        j = 0;
+    }
 }
 
 void MainWindow::centrarApp(){
@@ -338,5 +366,11 @@ void MainWindow::on_actionAbrir_Archivo_triggered(){
 
 void MainWindow::on_actionSAlir_triggered(){
     salir();
+}
+
+
+void MainWindow::on_spTablas_activated(int index){
+    ui->tabTabla->clear();
+    refrescaTabla();
 }
 

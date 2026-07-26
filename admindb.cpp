@@ -177,3 +177,60 @@ QList<Funciones::datTablas> AdminDb::getAllTablasAndSql(QString strRutaArchivo){
     return listaTablasSql;
 }
 
+QList<QVariantMap> AdminDb::getAllDatosTabla(QString strBd, QString strTabla){
+    QSqlDatabase                dbSql;
+    QSqlQuery                   sql;
+    QString                     strSql;
+    QList<Funciones::datCampos> listaCampos;
+    QVariantMap                 datoVariantMap;
+    QList<QVariantMap>          listaVariantMap;
+    int                         i;
+
+    listaCampos = getAllCampos(strBd, strTabla);
+    i = 0;
+    while (i < listaCampos.count()) {
+        datoVariantMap[listaCampos[i].strNombre] = "";
+        i++;
+    }
+
+    //
+    // Abrimos la base de datos
+    //
+    dbSql = QSqlDatabase::addDatabase("QSQLITE", "con_5");
+    dbSql.setDatabaseName(strBd);
+
+    if(dbSql.open()){
+        sql     = QSqlQuery(dbSql);
+        strSql  = "SELECT *FROM ";
+        strSql.append(strTabla);
+        sql.exec(strSql);
+    }
+
+    //
+    // Recorremos todos los registros de la tabla
+    //
+    sql.first();
+    while (sql.isValid()) {
+
+        //
+        // Recorremos todos los campos de la listaCampos
+        //
+        i = 0;
+        while (i < listaCampos.count()) {
+            datoVariantMap[listaCampos[i].strNombre] = sql.record().value(listaCampos[i].strNombre);
+            i++;
+        }
+        listaVariantMap.append(datoVariantMap);
+        sql.next();
+    }
+
+    //
+    // Cerramos la base de datos
+    //
+    dbSql = QSqlDatabase();
+    QSqlDatabase::removeDatabase("con_5");
+
+    return listaVariantMap;
+
+}
+
