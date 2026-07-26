@@ -6,15 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>934</width>
+    <width>776</width>
     <height>611</height>
    </rect>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>991</width>
-    <height>611</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -25,7 +19,7 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+    <item row="1" column="0">
      <widget class="QTabWidget" name="tabPrincipal">
       <property name="currentIndex">
        <number>1</number>
@@ -60,11 +54,11 @@
        <attribute name="title">
         <string>Hoja de datos</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_3">
+       <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="0">
-         <layout class="QVBoxLayout" name="verticalLayout">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,3,0,15">
+           <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,3,1,10">
             <item>
              <widget class="QLabel" name="label">
               <property name="text">
@@ -111,17 +105,177 @@
            </layout>
           </item>
           <item>
-           <widget class="QTableWidget" name="tabTabla">
-            <property name="gridStyle">
-             <enum>Qt::PenStyle::SolidLine</enum>
-            </property>
-            <attribute name="verticalHeaderVisible">
-             <bool>true</bool>
-            </attribute>
-            <attribute name="verticalHeaderShowSortIndicator" stdset="0">
-             <bool>false</bool>
-            </attribute>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="10,6">
+            <item>
+             <widget class="QTableWidget" name="tabTabla">
+              <property name="editTriggers">
+               <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+              </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+              </property>
+              <property name="gridStyle">
+               <enum>Qt::PenStyle::SolidLine</enum>
+              </property>
+              <attribute name="verticalHeaderVisible">
+               <bool>true</bool>
+              </attribute>
+              <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+               <bool>false</bool>
+              </attribute>
+             </widget>
+            </item>
+            <item>
+             <widget class="QFrame" name="frame">
+              <property name="frameShape">
+               <enum>QFrame::Shape::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Shadow::Raised</enum>
+              </property>
+              <widget class="QWidget" name="layoutWidget">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>10</y>
+                 <width>310</width>
+                 <height>391</height>
+                </rect>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1,1,1,20">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,1,2">
+                  <item>
+                   <widget class="QLabel" name="lblCampo2">
+                    <property name="text">
+                     <string>Nº Reg.</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="lblCampo2_3">
+                    <property name="text">
+                     <string>_id </string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="lblCampo">
+                    <property name="text">
+                     <string>Fecha 1</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1,2">
+                  <item>
+                   <widget class="QLabel" name="lblReg">
+                    <property name="frameShape">
+                     <enum>QFrame::Shape::Panel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Shadow::Sunken</enum>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="lblId">
+                    <property name="frameShape">
+                     <enum>QFrame::Shape::Panel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Shadow::Sunken</enum>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="txtCampo"/>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_2">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>170</width>
+                    <height>142</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="1,1,2">
+                  <item>
+                   <widget class="QLabel" name="label_3">
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_2">
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QToolButton" name="btnModificar">
+                    <property name="text">
+                     <string> Modificar Valor</string>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="imagenes/img.qrc">
+                      <normaloff>:/icon.png</normaloff>:/icon.png</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>24</width>
+                      <height>24</height>
+                     </size>
+                    </property>
+                    <property name="popupMode">
+                     <enum>QToolButton::ToolButtonPopupMode::DelayedPopup</enum>
+                    </property>
+                    <property name="toolButtonStyle">
+                     <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+                    </property>
+                    <property name="autoRaise">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>142</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
@@ -136,7 +290,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>934</width>
+     <width>776</width>
      <height>23</height>
     </rect>
    </property>

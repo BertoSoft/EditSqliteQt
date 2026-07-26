@@ -29,7 +29,6 @@ MainWindow::MainWindow(QWidget *parent)
     //
     // Desarrollamos la App
     //
-    this->resize(1200, 600);
     initReloj();
     initUi();
 
@@ -138,10 +137,16 @@ void MainWindow::abrirBaseDatos(){
 
 void MainWindow::initUi(){
 
+    this->resize(1100, 800);
+    this->setMaximumSize(1100, 800);
+    this->setMinimumSize(1100, 800);
+
     centrarApp();
     initBarraEstado();
     initArbolTablas();
     initSp();
+    limpiaControles();
+    desactivaControles();
 }
 
 void MainWindow::initReloj(void){
@@ -218,7 +223,6 @@ void MainWindow::initArbolTablas(){
 
 void MainWindow::initSp(){
     QList<QString>  listaTablas;
-
 
     ui->spTablas->clear();
     if(lblTexto->text() != Funciones().getAppName()){
@@ -314,6 +318,20 @@ void MainWindow::refrescaTabla(){
     // Numero de columnas = al numero de campos
     //
     ui->tabTabla->setColumnCount(listaCampos.count());
+
+    //
+    // Tamaño de las columnas ajustable
+    //
+    ui->tabTabla->setColumnWidth(0, 75);
+    i = 1;
+    while (i < ui->tabTabla->columnCount()) {
+        ui->tabTabla->horizontalHeader()->setSectionResizeMode(i, QHeaderView::ResizeMode::ResizeToContents);
+        i++;
+    }
+
+    //
+    // Headers
+    //
     i = 0;
     while (i < listaCampos.count()) {
         listaHeaders.append(listaCampos[i].strNombre);
@@ -321,7 +339,9 @@ void MainWindow::refrescaTabla(){
     }
     ui->tabTabla->setHorizontalHeaderLabels(listaHeaders);
 
-
+    //
+    // Obtenemos todos los datos de la tabla
+    //
     listaDatosVariant = AdminDb().getAllDatosTabla(lblTexto->text(), ui->spTablas->currentText());
 
     //
@@ -335,6 +355,8 @@ void MainWindow::refrescaTabla(){
 
         while (j < listaCampos.count()) {
             QTableWidgetItem *item = new QTableWidgetItem(dato[listaCampos[j].strNombre].toString());
+
+            item->setTextAlignment(Qt::AlignCenter);
             ui->tabTabla->setItem(i, j, item);
             j++;
         }
@@ -351,6 +373,28 @@ void MainWindow::centrarApp(){
     int y = (geometriaPantalla.height()/2) - (this->height()/2);
 
     this->move(x, y);
+}
+
+void MainWindow::limpiaControles(){
+    ui->lblReg->setText("");
+    ui->lblId->setText("");
+    ui->lblCampo->setText("");
+    ui->txtCampo->setText("");
+}
+
+void MainWindow::activaControles(){
+    ui->txtCampo->setEnabled(true);
+    ui->btnModificar->setEnabled(true);
+}
+
+void MainWindow::desactivaControles(){
+    ui->txtCampo->setEnabled(false);
+    ui->btnModificar->setEnabled(false);
+
+}
+
+void MainWindow::modificarDatos(){
+
 }
 
 void MainWindow::salir(){
@@ -372,5 +416,51 @@ void MainWindow::on_actionSAlir_triggered(){
 void MainWindow::on_spTablas_activated(int index){
     ui->tabTabla->clear();
     refrescaTabla();
+}
+
+void MainWindow::on_tabTabla_itemActivated(QTableWidgetItem *item){
+
+    activaControles();
+    ui->txtCampo->setFocus();
+    ui->txtCampo->selectAll();
+
+}
+
+
+void MainWindow::on_tabTabla_cellClicked(int row, int column){
+
+    //
+    // Si se pulsa en la columna de las _id, solo señalamos Reg y _id
+    //
+    if(column == 0){
+        limpiaControles();
+        desactivaControles();
+        ui->lblReg->setText(QString::number(row + 1));
+        ui->lblId->setText(ui->tabTabla->item(row, column)->text());
+    }
+
+    //
+    // Si se pulsa en cualquier otra columna, activamos los controles
+    //
+    if(column > 0){
+        limpiaControles();
+        ui->lblReg->setText(QString::number(row + 1));
+        ui->lblId->setText(ui->tabTabla->item(row, 0)->text());
+        ui->lblCampo->setText(ui->tabTabla->horizontalHeaderItem(column)->text());
+        ui->txtCampo->setText(ui->tabTabla->item(row, column)->text());
+    }
+
+
+}
+
+
+void MainWindow::on_btnModificar_clicked(){
+
+    if(ui->txtCampo->text() != ""){
+        modificarDatos();
+        limpiaControles();
+        desactivaControles();
+        ui->tabTabla->clearSelection();
+    }
 }
 

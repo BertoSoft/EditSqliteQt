@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QLabel>
+#include <QTableWidgetItem>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -39,6 +40,10 @@ public:
     void    refrescaTabla();
     void    salir();
     void    centrarApp();
+    void    activaControles();
+    void    desactivaControles();
+    void    limpiaControles();
+    void    modificarDatos();
 
 protected:
 
@@ -52,6 +57,12 @@ private slots:
     void on_actionSAlir_triggered();
 
     void on_spTablas_activated(int index);
+
+    void on_tabTabla_itemActivated(QTableWidgetItem *item);
+
+    void on_tabTabla_cellClicked(int row, int column);
+
+    void on_btnModificar_clicked();
 
 private:
     Ui::MainWindow *ui;
